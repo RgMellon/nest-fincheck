@@ -8,13 +8,15 @@ export class UsersService {
   constructor(private readonly userRepo: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
-    const emailTaken = this.userRepo.findByUnique({
+    const emailTaken = await this.userRepo.findByUnique({
       where: {
         email: createUserDto.email,
       },
     });
 
-    if (emailTaken) throw new ConflictException('This email already taken');
+    if (!!emailTaken) {
+      throw new ConflictException('This email already taken');
+    }
 
     const hashedPassword = await hash(createUserDto.password, 12);
 
