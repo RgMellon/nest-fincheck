@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { Request } from 'express';
 import { env } from 'src/shared/config/env';
+import { IS_PUBLIC_KEY } from 'src/shared/decorators/IsPublic';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -18,7 +19,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.getAllAndOverride('IS_PUBLIC', [
+    const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_KEY, [
       context.getClass(),
       context.getHandler(),
     ]);
