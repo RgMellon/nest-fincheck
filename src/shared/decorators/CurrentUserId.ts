@@ -12,8 +12,6 @@ export const CurrentUserId = createParamDecorator<undefined>(
       throw new UnauthorizedException();
     }
 
-    return {
-      userId: request.userId,
-    };
+    return request.userId;
   },
 );
