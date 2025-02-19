@@ -1,12 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateBankAccountDto } from './dto/create-bank-account.dto';
+import { Injectable } from '@nestjs/common';
+import { CreateBankAccountDto } from '../dto/create-bank-account.dto';
 
 import { BankAccountRepositories } from 'src/shared/database/repositories/bank-account.repositories';
-import { UpdateBankAccountDto } from './dto/update-bank-account.dto';
+import { UpdateBankAccountDto } from '../dto/update-bank-account.dto';
+import { ValidateBankAccountOwner } from './validate-bankAccount-owner.service';
 
 @Injectable()
 export class BankAccountService {
-  constructor(private readonly bankAccountRepo: BankAccountRepositories) {}
+  constructor(
+    private readonly bankAccountRepo: BankAccountRepositories,
+    private readonly validateBanckAccountOwner: ValidateBankAccountOwner,
+  ) {}
 
   create(userId: string, createBankAccountDto: CreateBankAccountDto) {
     const { color, initialBalance, name, type } = createBankAccountDto;
@@ -37,16 +41,7 @@ export class BankAccountService {
   ) {
     const { color, initialBalance, name, type } = updateBankAccountDto;
 
-    const isOwner = await this.bankAccountRepo.findFirst({
-      where: {
-        userId,
-        id: bankAccountId,
-      },
-    });
-
-    if (!isOwner) {
-      throw new NotFoundException('BankAccount not found');
-    }
+    await this.validateBanckAccountOwner.validate(userId, bankAccountId);
 
     return this.bankAccountRepo.update({
       where: {
@@ -56,7 +51,15 @@ export class BankAccountService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bankAccount`;
+  async remove(userId: string, bankAccountId: string) {
+    await this.validateBanckAccountOwner.validate(userId, bankAccountId);
+
+    await this.bankAccountRepo.delete({
+      where: {
+        id: bankAccountId,
+      },
+    });
+
+    return null;
   }
 }

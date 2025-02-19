@@ -1,5 +1,16 @@
-import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
-import { BankAccountService } from './bank-account.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  ParseUUIDPipe,
+  Delete,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
+import { BankAccountService } from './services/bank-account.service';
 import { CreateBankAccountDto } from './dto/create-bank-account.dto';
 import { UpdateBankAccountDto } from './dto/update-bank-account.dto';
 import { CurrentUserId } from 'src/shared/decorators/CurrentUserId';
@@ -24,7 +35,7 @@ export class BankAccountController {
   @Put(':bankAccountId')
   update(
     @CurrentUserId() userId: string,
-    @Param('bankAccountId') bankAccountId: string,
+    @Param('bankAccountId', ParseUUIDPipe) bankAccountId: string,
     @Body() updateBankAccountDto: UpdateBankAccountDto,
   ) {
     return this.bankAccountService.update(
@@ -34,8 +45,12 @@ export class BankAccountController {
     );
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.bankAccountService.remove(+id);
-  // }
+  @Delete(':bankAccountId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(
+    @CurrentUserId() userId: string,
+    @Param('bankAccountId') bankAccountId: string,
+  ) {
+    return this.bankAccountService.remove(userId, bankAccountId);
+  }
 }
