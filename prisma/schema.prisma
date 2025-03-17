@@ -50,7 +50,7 @@ model BankAccount {
 
 enum TransactionType {
   INCOME
-  EXPENSIVE
+  EXPENSE
 
   @@map("transaction_type")
 }

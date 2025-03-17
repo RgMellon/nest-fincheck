@@ -46,7 +46,7 @@ export class BankAccountService {
       const totalTransactions = bankAccount.transactions.reduce(
         (acc: number, current: { type: TransactionType; value: number }) => {
           if (current.type === 'INCOME') return acc + current.value;
-          if (current.type === 'EXPENSIVE') return acc - current.value;
+          if (current.type === 'EXPENSE') return acc - current.value;
         },
         0,
       );

@@ -59,6 +59,15 @@ export class TransactionsService {
           lt: new Date(Date.UTC(year, month + 1)),
         },
       },
+      include: {
+        category: {
+          select: {
+            icon: true,
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
   }
 
