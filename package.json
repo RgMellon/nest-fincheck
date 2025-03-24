@@ -17,7 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "copy-package": "cp package.json ./dist/package.json",
+    "copy-env": "cp .env ./dist/.env",
+    "copy-prisma-schema": "cp ./prisma/schema.prisma ./dist/schema.prisma",
+    "build-with-package": "yarn build && yarn copy-env && yarn copy-package && yarn copy-prisma-schema"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
