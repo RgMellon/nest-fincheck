@@ -13,9 +13,6 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Instalar dependências
-        run: yarn install --frozen-lockfile
-
       - name: Rodar build
         run: yarn build-with-package
 
