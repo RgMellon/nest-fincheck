@@ -25,7 +25,7 @@ let UsersController = class UsersController {
         return this.usersService.getUserById(userId);
     }
     ping() {
-        return 'ping2';
+        return 'ping23';
     }
 };
 exports.UsersController = UsersController;
