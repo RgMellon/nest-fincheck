@@ -20,7 +20,7 @@ jobs:
 
       - name: Copiar arquivos para EC2
         run: |
-          scp -i fincheck.pem -r ./dist/* ubuntu@ec2-34-234-95-9.compute-1.amazonaws.com:/home/ubuntu/fincheck-api/dist
+          scp -o StrictHostKeyChecking=no -i  fincheck.pem -r ./dist/* ubuntu@ec2-34-234-95-9.compute-1.amazonaws.com:/home/ubuntu/fincheck-api/dist
 
       - name: Conectar no EC2 e rodar deploy
         run: |
