@@ -21,7 +21,7 @@
     "copy-package": "cp package.json ./dist/package.json",
     "copy-env": "cp .env ./dist/.env",
     "copy-prisma-schema": "cp ./prisma/schema.prisma ./dist/schema.prisma",
-    "build-with-package": "yarn build && yarn copy-env && yarn copy-package && yarn copy-prisma-schema"
+    "build-with-package": "yarn build && yarn copy-package && yarn copy-prisma-schema"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
