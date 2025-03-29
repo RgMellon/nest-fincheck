@@ -15,6 +15,6 @@ export class UsersController {
   @IsPublic()
   @Get('/ping')
   ping() {
-    return 'ping';
+    return 'ping2';
   }
 }
