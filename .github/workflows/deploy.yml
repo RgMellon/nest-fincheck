@@ -1,0 +1,33 @@
+name: Deploy para EC2
+
+on:
+  push:
+    branches:
+      - main # Ou a branch que deseja monitorar
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependências
+        run: yarn install --frozen-lockfile
+
+      - name: Rodar build
+        run: yarn build-with-package
+
+      - name: Criar chave SSH a partir do Secret
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > fincheck.pem
+          chmod 600 fincheck.pem
+
+      - name: Copiar arquivos para EC2
+        run: |
+          scp -i fincheck.pem -r ./dist/* ubuntu@ec2-34-234-95-9.compute-1.amazonaws.com:/home/ubuntu/fincheck-api/dist
+
+      - name: Conectar no EC2 e rodar deploy
+        run: |
+          ssh -i fincheck.pem ubuntu@ec2-34-234-95-9.compute-1.amazonaws.com "bash /home/ubuntu/fincheck-api/deploy.sh"
